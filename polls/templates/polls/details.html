@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Question view</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+  {% if error_message %}
+  <div class="alert alert-danger">{{ error_message }}</div>
+  {% endif %}
+  <div class="row col-md-6 col-md-offset-5">
+    <h1 class="display-3 text-center">{{ question.question_text }}</h1>
+    <div class="w-100"></div>
+
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+      {% csrf_token %}
+      {% for choice in question.choices.all %}
+      <div class="form-check">
+        <input name="choice" class="form-check-input" type="radio" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <label class="form-check-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }} <span class="badge badge-light">{{ choice.votes }}</span></label>
+      </div>
+      {% endfor %}
+      <input class="btn btn-dark" type="submit" value="Vote">
+    </form>
+  </div>
+</div>
+</body>
+</html>
